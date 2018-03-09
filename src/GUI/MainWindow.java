@@ -2,9 +2,14 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import java.io.File;
+import java.io.*;
 
+import javax.swing.*;
+
+import GUI.formatCse360.*;
+//***************************************************************
+//The formatter example is at line 109 to end of function
+//***************************************************************
 /**
  * Adds the UI control to select the file and format it.
  * 
@@ -100,6 +105,26 @@ public class MainWindow {
 
 		JPanel wordCountPanel = getWordCountPanel();
 		outputStatsPanel.add(wordCountPanel);
+		
+		try {
+			PrintWriter writer = new PrintWriter("testOuput.txt", "utf-8");
+			formatCse360Project formatTest = new formatCse360Project();
+		
+			formatTest = formatCse360.formatInput("C:\\Users\\theri\\eclipse-workspace\\CSE360_Project\\testInput.txt");
+			
+			writer.println("Blanks Removed: " + formatTest.linesRem);
+			for(int x = 0; x < formatTest.inputList.size(); x++)
+			{
+				writer.println(formatTest.inputList.get(x).lineReturn());
+			}
+			
+			writer.close();
+		
+		}
+		catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		/*
 		 * Image icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
