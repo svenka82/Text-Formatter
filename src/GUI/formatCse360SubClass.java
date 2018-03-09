@@ -78,7 +78,7 @@ public class formatCse360SubClass
 	//setters
 	public boolean addWord(String newStr)
 	{
-		if((lineSize + newStr.length()) < 80)
+		if((lineSize + newStr.length()) <= 80)
 		{
 			if(lineSize > 0)
 			{

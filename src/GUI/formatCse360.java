@@ -18,114 +18,14 @@ public class formatCse360 {
 	
 	private static String input1;
 	private static formatCse360Project outputItem;
-	
-	/*public static void main(String[] args) throws IOException
-	{
-		InputStream is = new FileInputStream(args[0]);
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader stdin = new BufferedReader(isr);
-		
-		PrintWriter writer = new PrintWriter("testOuput.txt", "utf-8");
-		outputItem = new formatCse360Project();
-		
-		outputItem.inputList = new LinkedList<formatCse360SubClass>();
-		int x = 0;
-		char tempChar = 'a';
-		String tempStr = new String();
-		outputItem.linesRem = 0;
-		
-		input1 = stdin.readLine();
-		
-		do
-		{
-			formatCse360SubClass newLine = new formatCse360SubClass();
-			
-			if (x >= input1.length())
-			{
-				outputItem.linesRem++;
-			}
-			else
-			{
-				tempChar = input1.charAt(x);
-				while(x < input1.length())
-				{
-					if (Character.isWhitespace(tempChar))
-					{
-						x++;
-						if (x >= input1.length())
-						{
-							break;
-						}
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
-					}
-					else if(tempChar == '\t')
-					{
-						x++;
-						if (x >= input1.length())
-						{
-							break;
-						}
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
-					}
-					else
-					{
-						tempStr = "" + tempChar;
-						x++;
-						tempChar = input1.charAt(x);
-						
-						while((!Character.isWhitespace(tempChar)) && (tempChar != '\t'))
-						{
-							tempStr += tempChar;
-							x++;
-							if (x >= input1.length())
-							{
-								break;
-							}
-							else
-							{
-								tempChar = input1.charAt(x);
-							}
-						}
-						newLine.addWord(tempStr);
-						
-						x++;
-						if (x >= input1.length());
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
-					}
-				}
-				outputItem.inputList.add(newLine);
-				//end of line
-				x = 0;
-			}
-			
-		}while ((input1 = stdin.readLine()) != null); //end of file
-		
-		
-		for(int y = 0; y < outputItem.inputList.size(); y++)
-		{
-			writer.println(outputItem.inputList.get(y).lineReturn());
-		}
-		
-		writer.write("Lines Removed(Blank): " + outputItem.linesRem);
-		writer.close();
-		stdin.close();
-		
-	}
-	*/
+	private static formatCse360SubClass newLine;
+	private static String tempStr;
+	private static int x;
+	private static char[] tempInput;
+	private static char tempChar;
 	
 	public static formatCse360Project formatInput(String fileName) throws IOException
 	{
-		
-		//outputItem.inputList = new LinkedList<formatCse360SubClass>();
 		
 		InputStream is = new FileInputStream(fileName);
 		InputStreamReader isr = new InputStreamReader(is);
@@ -134,92 +34,107 @@ public class formatCse360 {
 		outputItem = new formatCse360Project();
 		
 		outputItem.inputList = new LinkedList<formatCse360SubClass>();
-		int x = 0;
-		char tempChar = 'a';
-		String tempStr = new String();
+		x = 0;
+		tempChar = 'a';
+		tempStr = new String();
 		outputItem.linesRem = 0;
 		
 		input1 = stdin.readLine();
 		
+		newLine = new formatCse360SubClass();
+		
 		do
 		{
-			formatCse360SubClass newLine = new formatCse360SubClass();
+			tempInput = input1.toCharArray();
 			
-			if (x >= input1.length())
+			if (x >= input1.length()) //case if line is just '\r' input1 length will be 0
 			{
 				outputItem.linesRem++;
 			}
 			else
 			{
-				tempChar = input1.charAt(x);
-				while(x < input1.length())
+				tempChar = tempInput[x];
+				while(x < tempInput.length)
 				{
-					if (Character.isWhitespace(tempChar))
+					if (Character.isWhitespace(tempChar) || tempChar == '\t')
 					{
 						x++;
-						if (x >= input1.length())
-						{
-							break;
-						}
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
+						getNextChar();
 					}
-					else if(tempChar == '\t')
-					{
-						x++;
-						if (x >= input1.length())
-						{
-							break;
-						}
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
-					}
+					
 					else
 					{
 						tempStr = "" + tempChar;
 						x++;
-						tempChar = input1.charAt(x);
+						if (x >= tempInput.length)
+						{
+							lineCheck();
+							break;
+						}
+						else
+						{
+							getNextChar();
+						}
 						
 						while((!Character.isWhitespace(tempChar)) && (tempChar != '\t'))
 						{
 							tempStr += tempChar;
 							x++;
-							if (x >= input1.length())
+							if (x >= tempInput.length)
 							{
 								break;
 							}
 							else
 							{
-								tempChar = input1.charAt(x);
+								tempChar = tempInput[x];
 							}
 						}
-						newLine.addWord(tempStr);
+						
+						lineCheck();
 						
 						x++;
-						if (x >= input1.length());
-						else
-						{
-							tempChar = input1.charAt(x);
-						}
+						getNextChar();
 					}
 				}
-				outputItem.inputList.add(newLine);
 				//end of line
 				x = 0;
 			}
 			
 		}while ((input1 = stdin.readLine()) != null); //end of file
 		
+		outputItem.inputList.add(newLine);
 		
 		stdin.close();
 		
 		return outputItem;
+	}
+	
+	private static void lineCheck()
+	{
+		if (newLine.getSize() <= 0)
+		{
+			newLine.addWord(tempStr);
+		}
 		
-
+		else if ((newLine.getSize() + tempStr.length()) >= 81)
+		{
+			outputItem.inputList.add(newLine);
+			newLine = new formatCse360SubClass();
+			newLine.addWord(tempStr);
+		}
+		else
+		{
+			newLine.addWord(tempStr);
+		}
+	}
+	
+	private static void getNextChar()
+	{
+		if (x >= tempInput.length);
+		else
+		{
+			tempChar = tempInput[x];
+		}
 	}
 
 }

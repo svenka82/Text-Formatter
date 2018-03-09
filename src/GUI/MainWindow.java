@@ -7,6 +7,7 @@ import java.io.*;
 import javax.swing.*;
 
 import GUI.formatCse360.*;
+import GUI.leftJustificationClass;
 //***************************************************************
 //The formatter example is at line 109 to end of function
 //***************************************************************
@@ -15,7 +16,7 @@ import GUI.formatCse360.*;
  * 
  * @author SUHAS VENKATESH MURTHY VERSION 1.0 DATE 03/02/2018
  */
-public class MainWindow {
+public class MainWindow implements ActionListener {
 
 	private JFrame mainFrame;
 	private JTextField inputFileNametextField;
@@ -25,6 +26,8 @@ public class MainWindow {
 	private JTextField blankLinetextField;
 	private JTextField lineCountTextField;
 	private JTextField wordCountTextField;
+	private JRadioButton leftJustificationRadioButton;
+	private JRadioButton rightJustificationradioButton;
 
 	/**
 	 * Launch the application.
@@ -79,13 +82,14 @@ public class MainWindow {
 		getOutputFileNameTextField();
 		outputFileSelectionPanel.add(outputFileNameTextField);
 
-		JRadioButton leftJustificationRadioButton = getLeftJustifyRdioButton();
+		leftJustificationRadioButton = getLeftJustifyRdioButton();
 		fileSelectionPanel.add(leftJustificationRadioButton);
 
-		JRadioButton rightJustificationradioButton = getRightJustifyRadioButton();
+		rightJustificationradioButton = getRightJustifyRadioButton();
 		fileSelectionPanel.add(rightJustificationradioButton);
 
 		JButton btnFormat = getFormatButton();
+		btnFormat.addActionListener(this);
 		fileSelectionPanel.add(btnFormat);
 
 		JPanel outputStatsPanel = getOutputStatusPanel();
@@ -113,6 +117,7 @@ public class MainWindow {
 			formatTest = formatCse360.formatInput("C:\\Users\\theri\\eclipse-workspace\\CSE360_Project\\testInput.txt");
 			
 			writer.println("Blanks Removed: " + formatTest.linesRem);
+			writer.println("Number of Lines: " + formatTest.inputList.size());
 			for(int x = 0; x < formatTest.inputList.size(); x++)
 			{
 				writer.println(formatTest.inputList.get(x).lineReturn());
@@ -122,7 +127,6 @@ public class MainWindow {
 		
 		}
 		catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -130,6 +134,21 @@ public class MainWindow {
 		 * Image icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
 		 * frame.setIconImage(icon);
 		 */
+	}
+	
+	//Format button function -- rightJustified still needs to be completed.
+	public void actionPerformed(ActionEvent e)
+	{
+		if (leftJustificationRadioButton.isSelected())
+		{
+			leftJustificationClass.leftJustified(inputFileNametextField.getText(), outputFileNameTextField.getText());
+			//Add changing to stats window here or call stats function
+		}
+		else
+		{
+			//rightJustified function call here
+			//Add changing to stats window here or call stats function
+		}
 	}
 
 	private JPanel getWordCountPanel() {
@@ -254,6 +273,7 @@ public class MainWindow {
 		rightJustificationradioButton.setBounds(new Rectangle(0, 0, 8, 9));
 		rightJustificationradioButton.setBounds(588, 244, 190, 29);
 		rightJustificationradioButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		rightJustificationradioButton.setSelected(false);
 		return rightJustificationradioButton;
 	}
 
@@ -263,6 +283,7 @@ public class MainWindow {
 		leftJustificationRadioButton.setBounds(new Rectangle(0, 0, 8, 9));
 		leftJustificationRadioButton.setBounds(183, 244, 190, 29);
 		leftJustificationRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		leftJustificationRadioButton.setSelected(true);
 		return leftJustificationRadioButton;
 	}
 
