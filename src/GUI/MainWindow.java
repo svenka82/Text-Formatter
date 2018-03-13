@@ -6,8 +6,9 @@ import java.io.*;
 
 import javax.swing.*;
 
-import GUI.formatCse360.*;
-import GUI.leftJustificationClass;
+import GUI.Formatter.*;
+import GUI.Justifier;
+
 //***************************************************************
 //The formatter example is at line 109 to end of function
 //***************************************************************
@@ -28,6 +29,10 @@ public class MainWindow implements ActionListener {
 	private JTextField wordCountTextField;
 	private JRadioButton leftJustificationRadioButton;
 	private JRadioButton rightJustificationradioButton;
+	private ButtonGroup group;
+
+	private static String inputFilePlaceHolder = "Enter File  Location and Name - Input File - .txt only";
+	private static String outputFilePlaceHolder = "Enter File  Location and Name - Output File - .txt only";
 
 	/**
 	 * Launch the application.
@@ -60,9 +65,12 @@ public class MainWindow implements ActionListener {
 
 		JTabbedPane tabbedPane = getTabbedPane();
 		mainFrame.getContentPane().add(tabbedPane);
+		
 
 		JPanel fileSelectionPanel = getFileSelectionPanel();
 		tabbedPane.addTab("File Selection", null, fileSelectionPanel, null);
+		
+		group = new ButtonGroup();
 
 		JPanel inptFileSelectionPanel = getInputFileSelectionPanel();
 		fileSelectionPanel.add(inptFileSelectionPanel);
@@ -83,9 +91,11 @@ public class MainWindow implements ActionListener {
 		outputFileSelectionPanel.add(outputFileNameTextField);
 
 		leftJustificationRadioButton = getLeftJustifyRdioButton();
+		group.add(leftJustificationRadioButton);
 		fileSelectionPanel.add(leftJustificationRadioButton);
 
 		rightJustificationradioButton = getRightJustifyRadioButton();
+		group.add(rightJustificationradioButton);
 		fileSelectionPanel.add(rightJustificationradioButton);
 
 		JButton btnFormat = getFormatButton();
@@ -109,64 +119,61 @@ public class MainWindow implements ActionListener {
 
 		JPanel wordCountPanel = getWordCountPanel();
 		outputStatsPanel.add(wordCountPanel);
-		
-		try {
-			PrintWriter writer = new PrintWriter("testOuput.txt", "utf-8");
-			formatCse360Project formatTest = new formatCse360Project();
-		
-			formatTest = formatCse360.formatInput("C:\\Users\\theri\\eclipse-workspace\\CSE360_Project\\testInput.txt");
-			
-			writer.println("Blanks Removed: " + formatTest.linesRem);
-			writer.println("Number of Lines: " + formatTest.inputList.size());
-			for(int x = 0; x < formatTest.inputList.size(); x++)
-			{
-				writer.println(formatTest.inputList.get(x).lineReturn());
-			}
-			
-			writer.close();
-		
-		}
-		catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 		/*
-		 * Image icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB_PRE);
 		 * frame.setIconImage(icon);
 		 */
 	}
-	
-	//Format button function -- rightJustified still needs to be completed.
-	public void actionPerformed(ActionEvent e)
-	{
-		if (leftJustificationRadioButton.isSelected())
-		{
-			leftJustificationClass.leftJustified(inputFileNametextField.getText(), outputFileNameTextField.getText());
-			//Add changing to stats window here or call stats function
+
+	// Format button function -- rightJustified still needs to be completed.
+	public void actionPerformed(ActionEvent e) {
+
+		format();
+
+		if (rightJustificationradioButton.isSelected()) {
+			// rightJustified function call here
+			// Add changing to stats window here or call stats function
+		} else {
+			Justifier.leftJustified(inputFileNametextField.getText(), outputFileNameTextField.getText());
+			// Add changing to stats window here or call stats function
 		}
-		else
-		{
-			//rightJustified function call here
-			//Add changing to stats window here or call stats function
+	}
+
+	private void format() {
+		try {
+			PrintWriter writer = new PrintWriter(outputFileNameTextField.getText(), "utf-8");
+			FormatterOutput formatTest = new FormatterOutput();
+			formatTest = Formatter.formatInput(inputFileNametextField.getText());
+
+			writer.println("Blanks Removed: " + formatTest.linesRem);
+			writer.println("Number of Lines: " + formatTest.inputList.size());
+			for (int x = 0; x < formatTest.inputList.size(); x++) {
+				writer.println(formatTest.inputList.get(x).lineReturn());
+
+				writer.close();
+			}
+
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
 
 	private JPanel getWordCountPanel() {
 		JPanel wordCountPanel = new JPanel();
 		wordCountPanel.setBackground(SystemColor.inactiveCaption);
-		wordCountPanel.setBounds(50, 373, 400, 60);
+		wordCountPanel.setBounds(50, 373, 600, 60);
 		wordCountPanel.setLayout(null);
 
 		wordCountTextField = new JTextField();
+		wordCountTextField.setEditable(false);
 		wordCountTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		wordCountTextField.setColumns(10);
-		wordCountTextField.setBounds(new Rectangle(310, 10, 75, 40));
-		wordCountTextField.setBounds(310, 10, 75, 40);
+		wordCountTextField.setBounds(new Rectangle(510, 10, 75, 40));
 		wordCountPanel.add(wordCountTextField);
 
 		JLabel wordCountLabel = new JLabel("Word Count");
 		wordCountLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		wordCountLabel.setBounds(15, 10, 200, 40);
+		wordCountLabel.setBounds(15, 10, 300, 40);
 		wordCountPanel.add(wordCountLabel);
 		return wordCountPanel;
 	}
@@ -174,19 +181,19 @@ public class MainWindow implements ActionListener {
 	private JPanel getLineCountPanel() {
 		JPanel lineCountPanel = new JPanel();
 		lineCountPanel.setBackground(SystemColor.inactiveCaption);
-		lineCountPanel.setBounds(50, 297, 400, 60);
+		lineCountPanel.setBounds(50, 297, 600, 60);
 		lineCountPanel.setLayout(null);
 
 		lineCountTextField = new JTextField();
+		lineCountTextField.setEditable(false);
 		lineCountTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lineCountTextField.setColumns(10);
-		lineCountTextField.setBounds(new Rectangle(310, 10, 75, 40));
-		lineCountTextField.setBounds(310, 10, 75, 40);
+		lineCountTextField.setBounds(new Rectangle(510, 10, 75, 40));
 		lineCountPanel.add(lineCountTextField);
 
 		JLabel lineCountLabel = new JLabel("Line Count");
 		lineCountLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lineCountLabel.setBounds(15, 10, 200, 40);
+		lineCountLabel.setBounds(15, 10, 300, 40);
 		lineCountPanel.add(lineCountLabel);
 		return lineCountPanel;
 	}
@@ -194,19 +201,19 @@ public class MainWindow implements ActionListener {
 	private JPanel getBlankLineRemovalPanel() {
 		JPanel blankLineRemovalPanel = new JPanel();
 		blankLineRemovalPanel.setBackground(SystemColor.inactiveCaption);
-		blankLineRemovalPanel.setBounds(50, 218, 400, 60);
+		blankLineRemovalPanel.setBounds(50, 218, 600, 60);
 		blankLineRemovalPanel.setLayout(null);
 
 		blankLinetextField = new JTextField();
+		blankLinetextField.setEditable(false);
 		blankLinetextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		blankLinetextField.setColumns(10);
-		blankLinetextField.setBounds(new Rectangle(310, 10, 75, 40));
-		blankLinetextField.setBounds(310, 10, 75, 40);
+		blankLinetextField.setBounds(new Rectangle(510, 10, 75, 40));
 		blankLineRemovalPanel.add(blankLinetextField);
 
 		JLabel blankLineRemovalLabel = new JLabel("Blank Line Removal Count\r\n");
 		blankLineRemovalLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		blankLineRemovalLabel.setBounds(15, 10, 200, 40);
+		blankLineRemovalLabel.setBounds(15, 10, 300, 40);
 		blankLineRemovalPanel.add(blankLineRemovalLabel);
 
 		return blankLineRemovalPanel;
@@ -215,18 +222,19 @@ public class MainWindow implements ActionListener {
 	private JPanel getAverageWordsPanel() {
 		JPanel averageWordspanel = new JPanel();
 		averageWordspanel.setBackground(SystemColor.inactiveCaption);
-		averageWordspanel.setBounds(50, 142, 400, 60);
+		averageWordspanel.setBounds(50, 142, 600, 60);
 		averageWordspanel.setLayout(null);
+
 		averageWordsTextField = new JTextField();
+		averageWordsTextField.setEditable(false);
 		averageWordsTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		averageWordsTextField.setColumns(10);
-		averageWordsTextField.setBounds(new Rectangle(310, 10, 75, 40));
-		averageWordsTextField.setBounds(310, 10, 75, 40);
+		averageWordsTextField.setBounds(new Rectangle(510, 10, 75, 40));
 		averageWordspanel.add(averageWordsTextField);
 
 		JLabel averageWordsLabel = new JLabel("Average Words Per Line");
 		averageWordsLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		averageWordsLabel.setBounds(15, 10, 200, 40);
+		averageWordsLabel.setBounds(15, 10, 300, 40);
 		averageWordspanel.add(averageWordsLabel);
 		return averageWordspanel;
 	}
@@ -234,18 +242,19 @@ public class MainWindow implements ActionListener {
 	private JPanel getAverageLineLengthPanel() {
 		JPanel averageLineLengthPanel = new JPanel();
 		averageLineLengthPanel.setBackground(SystemColor.inactiveCaption);
-		averageLineLengthPanel.setBounds(50, 66, 400, 60);
+		averageLineLengthPanel.setBounds(50, 66, 600, 60);
 		averageLineLengthPanel.setLayout(null);
 
 		averageLineTextField = new JTextField();
+		averageLineTextField.setEditable(false);
 		averageLineTextField.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		averageLineTextField.setBounds(new Rectangle(310, 10, 75, 40));
+		averageLineTextField.setBounds(new Rectangle(510, 10, 75, 40));
 		averageLineLengthPanel.add(averageLineTextField);
 		averageLineTextField.setColumns(10);
 
 		JLabel averageLineLengthLabel = new JLabel("Average Line Length");
 		averageLineLengthLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		averageLineLengthLabel.setBounds(15, 10, 200, 40);
+		averageLineLengthLabel.setBounds(15, 10, 300, 40);
 		averageLineLengthPanel.add(averageLineLengthLabel);
 
 		return averageLineLengthPanel;
@@ -291,7 +300,7 @@ public class MainWindow implements ActionListener {
 		outputFileNameTextField = new JTextField();
 		outputFileNameTextField.setForeground(Color.GRAY);
 		outputFileNameTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		outputFileNameTextField.setText("Enter File  Location and Name - Output File - .txt only");
+		outputFileNameTextField.setText(MainWindow.outputFilePlaceHolder);
 		outputFileNameTextField.setColumns(10);
 		outputFileNameTextField.setBounds(164, 7, 600, 35);
 	}
@@ -329,7 +338,7 @@ public class MainWindow implements ActionListener {
 		inputFileNametextField.setForeground(Color.GRAY);
 		inputFileNametextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		inputFileNametextField.setBounds(160, 7, 600, 35);
-		inputFileNametextField.setText("Enter File  Location and Name - Input File - .txt only");
+		inputFileNametextField.setText(MainWindow.inputFilePlaceHolder);
 		inputFileNametextField.setColumns(10);
 	}
 
