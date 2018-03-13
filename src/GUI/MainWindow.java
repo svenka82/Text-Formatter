@@ -20,6 +20,7 @@ import GUI.Justifier;
 public class MainWindow implements ActionListener {
 
 	private JFrame mainFrame;
+	JTabbedPane tabbedPane = getTabbedPane();
 	private JTextField inputFileNameTextField;
 	private JTextField outputFileNameTextField;
 	private JTextField averageLineTextField;
@@ -63,7 +64,7 @@ public class MainWindow implements ActionListener {
 	private void initialize() {
 		addMainFrame();
 
-		JTabbedPane tabbedPane = getTabbedPane();
+
 		mainFrame.getContentPane().add(tabbedPane);
 		
 
@@ -167,11 +168,22 @@ public class MainWindow implements ActionListener {
 
 		if (rightJustificationradioButton.isSelected()) {
 			// rightJustified function call here
+			/*lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
+			blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
+			wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
+			averageWordsTextField.setText(Double.toString(Statistics.averageWordPerLine(result)));
+			averageLineTextField.setText(Double.toString(Statistics.averageLineLength(result)));*/
 			// Add changing to stats window here or call stats function
 		} else {
-			Justifier.leftJustified(inputName, outputName);
+			FormatterOutput result = Justifier.leftJustified(inputName, outputName);
+			lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
+			blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
+			wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
+			averageWordsTextField.setText(Double.toString(Statistics.averageWordPerLine(result)));
+			averageLineTextField.setText(Double.toString(Statistics.averageLineLength(result)));
 			// Add changing to stats window here or call stats function
 		}
+		tabbedPane.setSelectedIndex(1);
 	}
 
 	private void format() {

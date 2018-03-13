@@ -9,12 +9,16 @@ public class Statistics {
 		int n = 0;
 		int lineSize = 0;
 		
-		for(n = 0; file.inputList.get(n) != null; n++)
+		while(n < file.inputList.size())
 		{
 			lineSize = lineSize + file.inputList.get(n).getSize();
+			n++;
 		}
 		
-		double x = lineSize/file.inputList.size();
+		Double ls = new Double(lineSize);
+		Double lc = new Double(file.inputList.size());
+		
+		double x = ls/lc;
 		
 		return x;
 	}
@@ -24,12 +28,16 @@ public class Statistics {
 		int n = 0;
 		int totalWords = 0;
 		
-		for(n = 0; file.inputList.get(n) != null; n++)
+		while(n < file.inputList.size())
 		{
 			totalWords = totalWords + file.inputList.get(n).getWordsInLine();
+			n++;
 		}
 		
-		double x = totalWords/file.inputList.size();
+		Double tw = new Double(totalWords);
+		Double lc = new Double(file.inputList.size());
+		
+		double x = tw/lc;
 		
 		return x;
 	}
@@ -49,9 +57,11 @@ public class Statistics {
 	{
 		int n = 0;
 		int totalWords = 0;
-		for(n = 0; file.inputList.get(n) != null; n++)
+		
+		while(n < file.inputList.size())
 		{
 			totalWords = totalWords + file.inputList.get(n).getWordsInLine();
+			n++;
 		}
 		
 		return totalWords;
