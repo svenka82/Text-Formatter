@@ -8,7 +8,7 @@ import GUI.Formatter.FormatterOutput;
 public class Justifier {
 	
 	
-	public static void leftJustified(String inputName, String outputName)
+	public static FormatterOutput leftJustified(String inputName, String outputName)
 	{
 		try {
 			PrintWriter writer = new PrintWriter(outputName, "utf-8");
@@ -21,11 +21,15 @@ public class Justifier {
 				writer.println(formatTest.inputList.get(x).lineReturn());
 			}
 			
+			
 			writer.close();
+			
+			return formatTest;
 		
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		return null;
 	}
 }
