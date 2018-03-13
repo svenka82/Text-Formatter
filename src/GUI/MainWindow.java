@@ -20,7 +20,7 @@ import GUI.Justifier;
 public class MainWindow implements ActionListener {
 
 	private JFrame mainFrame;
-	private JTextField inputFileNametextField;
+	private JTextField inputFileNameTextField;
 	private JTextField outputFileNameTextField;
 	private JTextField averageLineTextField;
 	private JTextField averageWordsTextField;
@@ -79,7 +79,7 @@ public class MainWindow implements ActionListener {
 		inptFileSelectionPanel.add(inputFileBrowseButton);
 
 		getInputFileNameTextField();
-		inptFileSelectionPanel.add(inputFileNametextField);
+		inptFileSelectionPanel.add(inputFileNameTextField);
 
 		JPanel outputFileSelectionPanel = getOutputFileSelectionPanel();
 		fileSelectionPanel.add(outputFileSelectionPanel);
@@ -127,14 +127,49 @@ public class MainWindow implements ActionListener {
 
 	// Format button function -- rightJustified still needs to be completed.
 	public void actionPerformed(ActionEvent e) {
-
+		String inputName = inputFileNameTextField.getText();
+		String outputName = outputFileNameTextField.getText();
+		File inputFile = new File(inputName);
+		File outputFile = new File(outputName);
+		String ext1 = GetExtension(inputFile);
+		String ext2 = GetExtension(outputFile);
+		
+		if(inputName.equalsIgnoreCase(outputName))
+		{
+			JOptionPane.showMessageDialog(null, "Error - Output file must be different than input file name.\nPlease choose a different name.", "Error", JOptionPane.WARNING_MESSAGE);
+			//throw error message (input file cannot be output file)
+			return;
+			//returns after message pops up so file doesn't get formatted
+		}
+		else if(!ext1.equalsIgnoreCase("txt") || !ext2.equalsIgnoreCase("txt"))
+		{
+			JOptionPane.showMessageDialog(null, "File is not .txt\nPlease Correct", "Error", JOptionPane.WARNING_MESSAGE);
+			//throw error message (not .txt)
+			return;
+			//returns after message pops up so file doesn't get formatted
+		}
+		else if(new File(outputName).isFile())
+		{
+			//check if okay to overwrite
+			int dialogResult = 1;
+			dialogResult = JOptionPane.showConfirmDialog(null, "Caution - Output File already exists. This will overwrite the file.\nAre you sure?","Alert", dialogResult);
+			if(dialogResult == JOptionPane.YES_OPTION)
+			{
+				//no need to do anything
+			}
+			else
+			{
+				return;
+				//returns when the user doesn't accept (either hits no or cancel)
+			}
+		}
 		format();
 
 		if (rightJustificationradioButton.isSelected()) {
 			// rightJustified function call here
 			// Add changing to stats window here or call stats function
 		} else {
-			Justifier.leftJustified(inputFileNametextField.getText(), outputFileNameTextField.getText());
+			Justifier.leftJustified(inputName, outputName);
 			// Add changing to stats window here or call stats function
 		}
 	}
@@ -143,7 +178,7 @@ public class MainWindow implements ActionListener {
 		try {
 			PrintWriter writer = new PrintWriter(outputFileNameTextField.getText(), "utf-8");
 			FormatterOutput formatTest = new FormatterOutput();
-			formatTest = Formatter.formatInput(inputFileNametextField.getText());
+			formatTest = Formatter.formatInput(inputFileNameTextField.getText());
 
 			writer.println("Blanks Removed: " + formatTest.linesRem);
 			writer.println("Number of Lines: " + formatTest.inputList.size());
@@ -155,6 +190,19 @@ public class MainWindow implements ActionListener {
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		}
+	}
+	
+	private String GetExtension(File file)
+	{
+		String name = file.getName();
+		try
+		{
+			return name.substring(name.lastIndexOf(".") + 1);
+		}
+		catch (Exception e)
+		{
+			return "";
 		}
 	}
 
@@ -334,12 +382,12 @@ public class MainWindow implements ActionListener {
 	}
 
 	private void getInputFileNameTextField() {
-		inputFileNametextField = new JTextField();
-		inputFileNametextField.setForeground(Color.GRAY);
-		inputFileNametextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		inputFileNametextField.setBounds(160, 7, 600, 35);
-		inputFileNametextField.setText(MainWindow.inputFilePlaceHolder);
-		inputFileNametextField.setColumns(10);
+		inputFileNameTextField = new JTextField();
+		inputFileNameTextField.setForeground(Color.GRAY);
+		inputFileNameTextField.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		inputFileNameTextField.setBounds(160, 7, 600, 35);
+		inputFileNameTextField.setText(MainWindow.inputFilePlaceHolder);
+		inputFileNameTextField.setColumns(10);
 	}
 
 	private JButton getInputFileBrowseButton(JTabbedPane tabbedPane) {
@@ -351,7 +399,7 @@ public class MainWindow implements ActionListener {
 				int result = inputFileChooser.showOpenDialog(tabbedPane);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectedInputFile = inputFileChooser.getSelectedFile();
-					inputFileNametextField.setText(selectedInputFile.getPath());
+					inputFileNameTextField.setText(selectedInputFile.getPath());
 				}
 			}
 		});
@@ -403,4 +451,31 @@ public class MainWindow implements ActionListener {
 		mainFrame.getContentPane().setLayout(null);
 		mainFrame.setLocationRelativeTo(null);
 	}
+	
+	//private class VerifyPanelPopUp extends WindowAdapter
+	//{
+	//	JFrame f;
+	//	VerifyPanelPopUp(){
+	//		f = new JFrame();
+	//		f.addWindowListener(this);
+	//		f.setSize(300,300);
+	//		f.setLayout(null);
+	//		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	//		f.setVisible(true);
+	//	}
+	//	public void windowClosing(WindowEvent e)
+	//	{
+	//		int a = JOptionPane.showConfirmDialog(f, "This will overwrite the file","Are you sure?");
+	//		if(a==JOptionPane.YES_OPTION)
+	//		{
+	//			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//			return;
+	//		}
+	//	}
+	//}
 }
