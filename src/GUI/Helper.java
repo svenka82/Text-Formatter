@@ -7,9 +7,9 @@ import java.util.LinkedList;
 //Description: Format sub-class to handle each line
 
 
-public class formatCse360SubClass 
+public class Helper 
 {
-	private class lineWord
+	private class LineWord
 	{
 		public String wordStr;
 		@SuppressWarnings("unused")
@@ -17,16 +17,16 @@ public class formatCse360SubClass
 	}
 	
 	private int lineSize;
-	private LinkedList<lineWord> lineStr;
+	private LinkedList<LineWord> lineStr;
 	private int wordsInLine;
 	
 	
 	
 	//constructor sets vars to empty
-	public formatCse360SubClass()
+	public Helper()
 	{
 		lineSize = 0;
-		lineStr = new LinkedList<lineWord>();
+		lineStr = new LinkedList<LineWord>();
 	}
 	
 	//getters
@@ -85,7 +85,7 @@ public class formatCse360SubClass
 				lineSize++;
 			}
 			
-			lineWord temp = new lineWord();
+			LineWord temp = new LineWord();
 			temp.wordStr = newStr;
 			temp.wordSize = newStr.length();
 			
