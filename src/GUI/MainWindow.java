@@ -3,9 +3,11 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.text.DecimalFormat;
 
 import javax.swing.*;
 
+//import GUI.*;
 import GUI.Formatter.*;
 import GUI.Justifier;
 
@@ -168,22 +170,24 @@ public class MainWindow implements ActionListener {
 
 		if (rightJustificationradioButton.isSelected()) {
 			// rightJustified function call here
-			/*lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
-			blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
-			wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
-			averageWordsTextField.setText(Double.toString(Statistics.averageWordPerLine(result)));
-			averageLineTextField.setText(Double.toString(Statistics.averageLineLength(result)));*/
+			/*FormatterOutput result = Justifier.RightJustified(inputName, outputName);
+			 * SetFields(result);*/
 			// Add changing to stats window here or call stats function
 		} else {
 			FormatterOutput result = Justifier.leftJustified(inputName, outputName);
-			lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
-			blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
-			wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
-			averageWordsTextField.setText(Double.toString(Statistics.averageWordPerLine(result)));
-			averageLineTextField.setText(Double.toString(Statistics.averageLineLength(result)));
+			SetFields(result);
 			// Add changing to stats window here or call stats function
 		}
 		tabbedPane.setSelectedIndex(1);
+	}
+	
+	private void SetFields(FormatterOutput result)
+	{
+		lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
+		blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
+		wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
+		averageWordsTextField.setText(String.format("%#.2f", Statistics.averageWordPerLine(result)));
+		averageLineTextField.setText(String.format("%#.2f", Statistics.averageLineLength(result)));
 	}
 
 	private void format() {
