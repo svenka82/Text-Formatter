@@ -169,6 +169,8 @@ public class MainWindow implements ActionListener {
 		format();
 
 		if (rightJustificationradioButton.isSelected()) {
+			FormatterOutput result = RJustifier.rightJustified(inputName, outputName);
+			SetFields(result);
 			// rightJustified function call here
 			/*FormatterOutput result = Justifier.RightJustified(inputName, outputName);
 			 * SetFields(result);*/
