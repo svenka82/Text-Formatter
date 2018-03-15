@@ -7,23 +7,6 @@ import GUI.Formatter.FormatterOutput;
 
 public class RJustifier {
 
-	public static String padRight(String str, int width, char spaceChar) {
-
-		final int length = str.length();
-		int bufferSpace = width - length;
-		if (bufferSpace < 0) {
-			// some error message if width is smaller than length
-			return "";
-		}
-
-		final StringBuilder sb = new StringBuilder();
-		for (int i = bufferSpace; i > 0; i--)
-			sb.append(spaceChar);
-
-		sb.append(str);
-		return sb.toString();
-	}
-
 	public static FormatterOutput rightJustified(String inputName, String outputName) {
 		try {
 
@@ -34,11 +17,6 @@ public class RJustifier {
 			formatTest = Formatter.formatInput(inputName);
 
 			for (int x = 0; x < formatTest.inputList.size(); x++) {
-				
-//				writer.printf("%20s %" + (width - formatTest.inputList.get(x).lineReturn().length()) + "s", " ",
-//						padRight(formatTest.inputList.get(x).lineReturn(), width, ' '));
-//
-//				writer.println();
 				
 				int lineLength = formatTest.inputList.get(x).getSize();
 				if (lineLength < 80)
