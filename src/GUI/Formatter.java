@@ -65,6 +65,11 @@ public class Formatter {
 					{
 						x++;
 						getNextChar();
+						if(x >= tempInput.length)
+						{
+							outputItem.linesRem++;
+							break;
+						}
 					}
 					
 					else
@@ -81,7 +86,7 @@ public class Formatter {
 							getNextChar();
 						}
 						
-						while((!Character.isWhitespace(tempChar)) && (tempChar != '\t'))
+						while((!Character.isWhitespace(tempChar)) && (tempChar != '\t') && (tempChar != '\n'))
 						{
 							tempStr += tempChar;
 							x++;
