@@ -96,6 +96,19 @@ public class Helper
 			return true;
 		}
 		
+		else if(lineSize == 0)
+		{
+			LineWord temp = new LineWord();
+			temp.wordStr = newStr;
+			temp.wordSize = newStr.length();
+			
+			lineStr.add(temp);
+			lineSize += newStr.length();
+			wordsInLine++;
+			
+			return true;
+		}
+		
 		else
 		{
 			return false;

@@ -6,7 +6,7 @@ package GUI;
 
 import java.io.*;
 import java.util.LinkedList;
-import GUI.Helper;
+import GUI.*;
 
 public class Formatter {
 	
@@ -121,7 +121,7 @@ public class Formatter {
 			newLine.addWord(tempStr);
 		}
 		
-		else if ((newLine.getSize() + tempStr.length()) >= 81)
+		else if ((newLine.getSize() + tempStr.length()) >= 80)
 		{
 			outputItem.inputList.add(newLine);
 			newLine = new Helper();

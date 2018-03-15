@@ -141,13 +141,13 @@ public class MainWindow implements ActionListener {
 			return;
 		}
 
-		if (outputName.equalsIgnoreCase(outputFilePlaceHolder) || outputName.isEmpty()) {
+		else if (outputName.equalsIgnoreCase(outputFilePlaceHolder) || outputName.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please provide an output file name.", "I/O error ",
 					JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
-		if (inputName.equalsIgnoreCase(outputName)) {
+		else if (inputName.equalsIgnoreCase(outputName)) {
 			JOptionPane.showMessageDialog(null,
 					"Error - Output file must be different than input file name.\nPlease choose a different name.",
 					"Error", JOptionPane.WARNING_MESSAGE);

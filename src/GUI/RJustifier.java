@@ -27,15 +27,14 @@ public class RJustifier {
 	public static FormatterOutput rightJustified(String inputName, String outputName) {
 		try {
 
-			// width can be whatever one wants to set it to
-			int width = 80;
+			int width = 150;
 			PrintWriter writer = new PrintWriter(outputName, "utf-8");
 			FormatterOutput formatTest = new FormatterOutput();
 
 			formatTest = Formatter.formatInput(inputName);
 
 			for (int x = 0; x < formatTest.inputList.size(); x++) {
-
+				
 				writer.printf("%20s %" + (width - formatTest.inputList.get(x).lineReturn().length()) + "s", " ",
 						padRight(formatTest.inputList.get(x).lineReturn(), width, ' '));
 
