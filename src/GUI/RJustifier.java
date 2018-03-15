@@ -13,7 +13,7 @@ public class RJustifier {
 		int bufferSpace = width - length;
 		if (bufferSpace < 0) {
 			// some error message if width is smaller than length
-			return "Error Message";
+			return "";
 		}
 
 		final StringBuilder sb = new StringBuilder();
