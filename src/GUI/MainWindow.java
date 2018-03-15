@@ -66,13 +66,11 @@ public class MainWindow implements ActionListener {
 	private void initialize() {
 		addMainFrame();
 
-
 		mainFrame.getContentPane().add(tabbedPane);
-		
 
 		JPanel fileSelectionPanel = getFileSelectionPanel();
 		tabbedPane.addTab("File Selection", null, fileSelectionPanel, null);
-		
+
 		group = new ButtonGroup();
 
 		JPanel inptFileSelectionPanel = getInputFileSelectionPanel();
@@ -136,90 +134,128 @@ public class MainWindow implements ActionListener {
 		File outputFile = new File(outputName);
 		String ext1 = GetExtension(inputFile);
 		String ext2 = GetExtension(outputFile);
-		
-		if(inputName.equalsIgnoreCase(outputName))
-		{
-			JOptionPane.showMessageDialog(null, "Error - Output file must be different than input file name.\nPlease choose a different name.", "Error", JOptionPane.WARNING_MESSAGE);
-			//throw error message (input file cannot be output file)
-			return;
-			//returns after message pops up so file doesn't get formatted
-		}
-		else if(!ext1.equalsIgnoreCase("txt") || !ext2.equalsIgnoreCase("txt"))
-		{
-			JOptionPane.showMessageDialog(null, "File is not .txt\nPlease Correct", "Error", JOptionPane.WARNING_MESSAGE);
-			//throw error message (not .txt)
-			return;
-			//returns after message pops up so file doesn't get formatted
-		}
-		else if(new File(outputName).isFile())
-		{
-			//check if okay to overwrite
-			int dialogResult = 1;
-			dialogResult = JOptionPane.showConfirmDialog(null, "Caution - Output File already exists. This will overwrite the file.\nAre you sure?","Alert", dialogResult);
-			if(dialogResult == JOptionPane.YES_OPTION)
-			{
-				//no need to do anything
-			}
-			else
-			{
-				return;
-				//returns when the user doesn't accept (either hits no or cancel)
-			}
-		}
-		format();
 
-		if (rightJustificationradioButton.isSelected()) {
-			FormatterOutput result = RJustifier.rightJustified(inputName, outputName);
-			SetFields(result);
-			// rightJustified function call here
-			/*FormatterOutput result = Justifier.RightJustified(inputName, outputName);
-			 * SetFields(result);*/
-			// Add changing to stats window here or call stats function
+		if (inputName.equalsIgnoreCase(inputFilePlaceHolder) || inputName.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please provide an input file name.", "I/O error ",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		if (outputName.equalsIgnoreCase(outputFilePlaceHolder) || outputName.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please provide an output file name.", "I/O error ",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		if (inputName.equalsIgnoreCase(outputName)) {
+			JOptionPane.showMessageDialog(null,
+					"Error - Output file must be different than input file name.\nPlease choose a different name.",
+					"Error", JOptionPane.WARNING_MESSAGE);
+			// throw error message (input file cannot be output file)
+			return;
+			// returns after message pops up so file doesn't get formatted
+		} else if (!ext1.equalsIgnoreCase("txt") || !ext2.equalsIgnoreCase("txt")) {
+			JOptionPane.showMessageDialog(null, "File is not .txt\nPlease Correct", "Error",
+					JOptionPane.WARNING_MESSAGE);
+			// throw error message (not .txt)
+			return;
+			// returns after message pops up so file doesn't get formatted
+		} else if (new File(outputName).isFile()) {
+			// check if okay to overwrite
+			int dialogResult = 1;
+			dialogResult = JOptionPane.showConfirmDialog(null,
+					"Caution - Output File already exists. This will overwrite the file.\nAre you sure?", "Alert",
+					dialogResult);
+			if (dialogResult == JOptionPane.YES_OPTION) {
+				// no need to do anything
+			} else {
+				return;
+				// returns when the user doesn't accept (either hits no or cancel)
+			}
+		}
+		if (format()) {
+
+			if (rightJustificationradioButton.isSelected()) {
+				FormatterOutput result = RJustifier.rightJustified(inputName, outputName);
+				SetFields(result);
+				// rightJustified function call here
+				/*
+				 * FormatterOutput result = Justifier.RightJustified(inputName, outputName);
+				 * SetFields(result);
+				 */
+				// Add changing to stats window here or call stats function
+			} else {
+				FormatterOutput result = Justifier.leftJustified(inputName, outputName);
+				SetFields(result);
+				// Add changing to stats window here or call stats function
+			}
 		} else {
-			FormatterOutput result = Justifier.leftJustified(inputName, outputName);
-			SetFields(result);
-			// Add changing to stats window here or call stats function
+			SetFields(null);
 		}
 		tabbedPane.setSelectedIndex(1);
 	}
-	
-	private void SetFields(FormatterOutput result)
-	{
-		lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
-		blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
-		wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
-		averageWordsTextField.setText(String.format("%#.2f", Statistics.averageWordPerLine(result)));
-		averageLineTextField.setText(String.format("%#.2f", Statistics.averageLineLength(result)));
+
+	private void SetFields(FormatterOutput result) {
+		if (result != null) {
+			lineCountTextField.setText(Integer.toString(Statistics.lineCount(result)));
+			blankLinetextField.setText(Integer.toString(Statistics.blankLinesRemoved(result)));
+			wordCountTextField.setText(Integer.toString(Statistics.wordCount(result)));
+			averageWordsTextField.setText(String.format("%#.2f", Statistics.averageWordPerLine(result)));
+			averageLineTextField.setText(String.format("%#.2f", Statistics.averageLineLength(result)));
+		}
+
+		else {
+			clear();
+		}
 	}
 
-	private void format() {
+	private void clear() {
+		lineCountTextField.setText("");
+		blankLinetextField.setText("");
+		wordCountTextField.setText("");
+		averageWordsTextField.setText("");
+		averageLineTextField.setText("");
+	}
+
+	private boolean format() {
+
+		boolean formatFlag = false;
+		PrintWriter writer = null;
 		try {
-			PrintWriter writer = new PrintWriter(outputFileNameTextField.getText(), "utf-8");
+			writer = new PrintWriter(outputFileNameTextField.getText(), "utf-8");
 			FormatterOutput formatTest = new FormatterOutput();
 			formatTest = Formatter.formatInput(inputFileNameTextField.getText());
 
-			writer.println("Blanks Removed: " + formatTest.linesRem);
-			writer.println("Number of Lines: " + formatTest.inputList.size());
-			for (int x = 0; x < formatTest.inputList.size(); x++) {
-				writer.println(formatTest.inputList.get(x).lineReturn());
+			if (formatTest != null) {
+				// writer.println("Blanks Removed: " + formatTest.linesRem);
+				// writer.println("Number of Lines: " + formatTest.inputList.size());
+				for (int x = 0; x < formatTest.inputList.size(); x++) {
+					writer.println(formatTest.inputList.get(x).lineReturn());
+				}
 
-				writer.close();
-			}
+				formatFlag = true;
+			} else
+				formatFlag = false;
 
 		} catch (IOException e1) {
 			e1.printStackTrace();
+
+			formatFlag = false;
 		}
+
+		finally {
+			if (writer != null)
+				writer.close();
+		}
+
+		return formatFlag;
 	}
-	
-	private String GetExtension(File file)
-	{
+
+	private String GetExtension(File file) {
 		String name = file.getName();
-		try
-		{
+		try {
 			return name.substring(name.lastIndexOf(".") + 1);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			return "";
 		}
 	}

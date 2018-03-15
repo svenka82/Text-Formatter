@@ -42,7 +42,12 @@ public class Formatter {
 		inputline = stdin.readLine();
 		
 		newLine = new Helper();
-		
+		if(inputline == null || inputline.length() == 0) {
+			is.close();
+			isr.close();
+			stdin.close();
+		  return null;
+		}
 		do
 		{
 			tempInput = inputline.toCharArray();
