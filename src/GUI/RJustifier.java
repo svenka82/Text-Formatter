@@ -27,7 +27,7 @@ public class RJustifier {
 	public static FormatterOutput rightJustified(String inputName, String outputName) {
 		try {
 
-			int width = 150;
+			int width = 80;
 			PrintWriter writer = new PrintWriter(outputName, "utf-8");
 			FormatterOutput formatTest = new FormatterOutput();
 
@@ -35,10 +35,21 @@ public class RJustifier {
 
 			for (int x = 0; x < formatTest.inputList.size(); x++) {
 				
-				writer.printf("%20s %" + (width - formatTest.inputList.get(x).lineReturn().length()) + "s", " ",
-						padRight(formatTest.inputList.get(x).lineReturn(), width, ' '));
-
-				writer.println();
+//				writer.printf("%20s %" + (width - formatTest.inputList.get(x).lineReturn().length()) + "s", " ",
+//						padRight(formatTest.inputList.get(x).lineReturn(), width, ' '));
+//
+//				writer.println();
+				
+				int lineLength = formatTest.inputList.get(x).getSize();
+				if (lineLength < 80)
+				{
+					int numSpaces = width - lineLength;
+					for(int y = 0; y < numSpaces; y++)
+					{
+						writer.print(" ");
+					}
+				}
+				writer.println(formatTest.inputList.get(x).lineReturn());
 			}
 
 			writer.close();
