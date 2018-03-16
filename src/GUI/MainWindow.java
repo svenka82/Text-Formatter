@@ -375,11 +375,13 @@ public class MainWindow implements ActionListener {
 		JButton btnFormat = new JButton("Format");
 		btnFormat.setBounds(393, 298, 150, 50);
 		btnFormat.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnFormat.setFocusPainted(false);
 		return btnFormat;
 	}
 
 	private JRadioButton getRightJustifyRadioButton() {
 		JRadioButton rightJustificationradioButton = new JRadioButton("Right Justification");
+		rightJustificationradioButton.setFocusPainted(false);
 		rightJustificationradioButton.setBackground(Color.WHITE);
 		rightJustificationradioButton.setBounds(new Rectangle(0, 0, 8, 9));
 		rightJustificationradioButton.setBounds(588, 244, 190, 29);
@@ -390,6 +392,7 @@ public class MainWindow implements ActionListener {
 
 	private JRadioButton getLeftJustifyRdioButton() {
 		JRadioButton leftJustificationRadioButton = new JRadioButton("Left Justification");
+		leftJustificationRadioButton.setFocusPainted(false);
 		leftJustificationRadioButton.setBackground(Color.WHITE);
 		leftJustificationRadioButton.setBounds(new Rectangle(0, 0, 8, 9));
 		leftJustificationRadioButton.setBounds(183, 244, 190, 29);
@@ -421,6 +424,7 @@ public class MainWindow implements ActionListener {
 			}
 		});
 		outputFileBrowseButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		outputFileBrowseButton.setFocusPainted(false);
 		outputFileBrowseButton.setBounds(new Rectangle(46, 7, 100, 35));
 		outputFileBrowseButton.setBackground(Color.WHITE);
 		return outputFileBrowseButton;
@@ -458,6 +462,7 @@ public class MainWindow implements ActionListener {
 			}
 		});
 		inputFileBrowseButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		inputFileBrowseButton.setFocusPainted(false);
 		inputFileBrowseButton.setBackground(Color.WHITE);
 		inputFileBrowseButton.setBounds(new Rectangle(40, 0, 0, 0));
 		inputFileBrowseButton.setBounds(40, 7, 100, 35);
@@ -484,6 +489,7 @@ public class MainWindow implements ActionListener {
 
 	private JTabbedPane getTabbedPane() {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setFocusable(false);
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		tabbedPane.setOpaque(true);
@@ -500,7 +506,7 @@ public class MainWindow implements ActionListener {
 	private void addMainFrame() {
 		mainFrame = new JFrame();
 		mainFrame.setResizable(false);
-		mainFrame.setBounds(100, 100, 1022, 715);
+		mainFrame.setBounds(100, 100, 1015, 675);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
 		mainFrame.setLocationRelativeTo(null);
