@@ -11,7 +11,7 @@ public class RJustifier {
 		try {
 
 			int width = 80;
-			PrintWriter writer = new PrintWriter(outputName, "utf-8");
+			PrintWriter writer = new PrintWriter(outputName);
 			FormatterOutput formatTest = new FormatterOutput();
 
 			formatTest = Formatter.formatInput(inputName);

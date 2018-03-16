@@ -11,7 +11,7 @@ public class Justifier {
 	public static FormatterOutput leftJustified(String inputName, String outputName)
 	{
 		try {
-			PrintWriter writer = new PrintWriter(outputName, "utf-8");
+			PrintWriter writer = new PrintWriter(outputName);
 			FormatterOutput formatTest = new FormatterOutput();
 		
 			formatTest = Formatter.formatInput(inputName);

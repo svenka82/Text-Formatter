@@ -222,7 +222,7 @@ public class MainWindow implements ActionListener {
 		boolean formatFlag = false;
 		PrintWriter writer = null;
 		try {
-			writer = new PrintWriter(outputFileNameTextField.getText(), "utf-8");
+			writer = new PrintWriter(outputFileNameTextField.getText());
 			FormatterOutput formatTest = new FormatterOutput();
 			formatTest = Formatter.formatInput(inputFileNameTextField.getText());
 
